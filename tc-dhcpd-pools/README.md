@@ -10,12 +10,12 @@ OpenTSDB tcollector - http://opentsdb.net/tcollector.html
   
 dhcpd-pools - http://dhcpd-pools.sourceforge.net/
 
-  aptitude install uthash-dev
-  wget http://sourceforge.net/projects/dhcpd-pools/files/dhcpd-pools-2.24.tar.xz
-  tar -xJvf dhcpd-pools-2.24.tar.xz
-  cd dhcpd-pools-2.24
-  ./configure
-  make && make install
+ > aptitude install uthash-dev
+ > wget http://sourceforge.net/projects/dhcpd-pools/files/dhcpd-pools-2.24.tar.xz
+ > tar -xJvf dhcpd-pools-2.24.tar.xz
+ > cd dhcpd-pools-2.24
+ > ./configure
+ > make && make install
 
 Installation
 ------------
