@@ -1,6 +1,6 @@
 #!/bin/sh
 # 
-# peritus-tc-tools/tc-atmail.sh
+# peritus-tc-tools/tc-atmail/tc-atmail.sh
 # Count some tables from @mail MySQL database 
 # and output it to OpenTSDB tcollector
 # 
