@@ -87,13 +87,13 @@ def main():
             # Only process lines including a "xmt", this excludes time lines etc
             if 'xmt' in fields:
                 print("icmp.lossrate " + str(ts) + " " + fields[6] + 
-                      "host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
+                      " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
                 # RTT numbers only included if at least one packet received:
                 if 'avg' in fields:
                     print("icmp.latency.avg " + str(ts) + " " + fields[11] + 
-                          "host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
+                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
                     print("icmp.latency.max " + str(ts) + " " + fields[12] + 
-                          "host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
+                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
                 
             line = p.stderr.readline()
         
