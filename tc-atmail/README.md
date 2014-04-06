@@ -2,7 +2,7 @@ tc-atmail.sh
 ==============
 OpenTSDB tcollector script for counting Atmail mysql table sizes.
 
-![](https://raw.github.com/PeritusConsulting/peritus-tc-tools/master/tc-atmail/tc-atmail-graph-screenshot.png.png)
+![](https://raw.github.com/PeritusConsulting/peritus-tc-tools/master/tc-atmail/tc-atmail-graph-screenshot.png)
 
 Requirements
 ------------
