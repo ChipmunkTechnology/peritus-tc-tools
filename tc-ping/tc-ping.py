@@ -2,10 +2,10 @@
 
 """
 
-peritus-tc-tools/tc-ping/tc-ping.py
+peritus-tc-tools/tc-ping/tc-ping.py - v 1.1.1
 OpenTSDB tcollector wrapper for fping3
 
-2014-04-06 Stian Ovrevage <stian@peritusconsulting.no>
+2014-08-23 Stian Ovrevage <stian@peritusconsulting.no>
 
 Pings hosts every 3 seconds, outputs statistic every 10 seconds
 which are formatted into OpenTSDB tcollector compatible format.
@@ -59,10 +59,24 @@ Default should be 0. DSCP cs4 (32) is TOS 128. DSCP ef (46) is TOS 184.
 '''
 tos = "0"
 
+'''
+Interface. Usefull for pinging hosts via different interfaces, such as wired
+and wireless. Have a different tc-ping.py for each interface-value.
+Default is empty for auto. Example: interface = "wlan0"
+'''
+interface = ""
+
 ''' host tag for metrics. Use system fqdn hostname by default '''
 host = socket.getfqdn()
 
-command = ['fping -B 1 -C ' + pingcount + ' -D -r0 -O ' + tos + ' -Q '
+''' create interface tag string, if interface is defined '''
+if len(interface) > 0:
+  interface_tag = "interface=" + interface
+else:
+  interface_tag = ""
+
+
+command = ['fping -I "' + interface + '" -B 1 -C ' + pingcount + ' -D -r0 -O ' + tos + ' -Q '
            + statsinterval + ' -p ' + pinginterval + ' < ' + hostfile]
 
 def main():
@@ -86,15 +100,15 @@ def main():
             
             # Only process lines including a "xmt", this excludes time lines etc
             if 'xmt' in fields:
-                print("icmp.lossrate " + str(ts) + " " + fields[6] + 
-                      " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
+                print("icmp.lossrate " + str(ts) + " " + fields[6] +
+                      " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
                 # RTT numbers only included if at least one packet received:
                 if 'avg' in fields:
-                    print("icmp.latency.avg " + str(ts) + " " + fields[11] + 
-                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
-                    print("icmp.latency.max " + str(ts) + " " + fields[12] + 
-                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos)
-                
+                    print("icmp.latency.avg " + str(ts) + " " + fields[11] +
+                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
+                    print("icmp.latency.max " + str(ts) + " " + fields[12] +
+                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
+
             line = p.stderr.readline()
         
     except OSError, err:
