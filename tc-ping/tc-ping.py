@@ -2,7 +2,7 @@
 
 """
 
-peritus-tc-tools/tc-ping/tc-ping.py - v 1.1.1
+peritus-tc-tools/tc-ping/tc-ping.py - v 1.1.2
 OpenTSDB tcollector wrapper for fping3
 
 2014-08-23 Stian Ovrevage <stian@peritusconsulting.no>
@@ -73,7 +73,7 @@ host = socket.getfqdn()
 if len(interface) > 0:
   interface_tag = "interface=" + interface
 else:
-  interface_tag = ""
+  interface_tag = "interface=default"
 
 
 command = ['fping -I "' + interface + '" -B 1 -C ' + pingcount + ' -D -r0 -O ' + tos + ' -Q '
