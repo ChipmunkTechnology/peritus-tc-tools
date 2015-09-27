@@ -2,10 +2,14 @@
 
 """
 
-peritus-tc-tools/tc-ping/tc-ping.py - v 1.1.2
+peritus-tc-tools/tc-ping/tc-ping.py - v 1.1.3
 OpenTSDB tcollector wrapper for fping3
 
 2014-08-23 Stian Ovrevage <stian@peritusconsulting.no>
+
+2015-09-27 - version 1.1.3
+  - Fixed bug where we send 0% packet loss even if host is dead (100% loss), 
+    because fping might send 0 and receive 0 packets and hence report 0% packet loss.
 
 Pings hosts every 3 seconds, outputs statistic every 10 seconds
 which are formatted into OpenTSDB tcollector compatible format.
@@ -100,14 +104,16 @@ def main():
             
             # Only process lines including a "xmt", this excludes time lines etc
             if 'xmt' in fields:
-                print("icmp.lossrate " + str(ts) + " " + fields[6] +
-                      " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
-                # RTT numbers only included if at least one packet received:
-                if 'avg' in fields:
-                    print("icmp.latency.avg " + str(ts) + " " + fields[11] +
+                # Only process lines where number of packets is higher than 0
+                if fields[4] != '0':
+                    print("icmp.lossrate " + str(ts) + " " + fields[6] +
                           " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
-                    print("icmp.latency.max " + str(ts) + " " + fields[12] +
-                          " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
+                    # RTT numbers only included if at least one packet received:
+                    if 'avg' in fields:
+                        print("icmp.latency.avg " + str(ts) + " " + fields[11] +
+                              " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
+                        print("icmp.latency.max " + str(ts) + " " + fields[12] +
+                              " host=" + host + " dsthost=" + fields[0] + " tos=" + tos + " " + interface_tag)
 
             line = p.stderr.readline()
         
